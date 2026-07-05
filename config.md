@@ -41,6 +41,6 @@ Configuration:
 - `backlog_suppress_new_cards` - hide new cards while studying and hide the New
   column in the deck browser without changing deck presets. Default: `false`.
 - `backlog_bury_after_fail` - auto-bury a card after repeated **Again** answers
-  today. Default: `false`.
+  today. Default: `true`.
 - `backlog_bury_after_fail_limit` - number of **Again** answers before
-  auto-burying. Default: `1`.
+  auto-burying. Default: `5`.
