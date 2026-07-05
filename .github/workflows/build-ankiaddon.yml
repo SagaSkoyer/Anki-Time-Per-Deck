@@ -1,0 +1,26 @@
+name: Build .ankiaddon
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Check the add-on byte-compiles
+        run: python -m py_compile __init__.py
+
+      - name: Build TimePerDeck.ankiaddon
+        run: bash build.sh
+
+      - name: Upload .ankiaddon artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: TimePerDeck.ankiaddon
+          path: TimePerDeck.ankiaddon
+          if-no-files-found: error

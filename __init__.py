@@ -711,7 +711,7 @@ DEFAULT_CONFIG = {
     "postpone_all_after_grace": True,
     "suppress_new_cards": False,
     "backlog_suppress_new_cards": False,
-    "backlog_bury_after_fail": False,
+    "backlog_bury_after_fail": True,
     "backlog_bury_after_fail_limit": DEFAULT_BACKLOG_FAIL_LIMIT,
     "over_limit_grace_percent": DEFAULT_OVER_LIMIT_GRACE_PERCENT,
     "recommended_order": True,
@@ -757,7 +757,12 @@ def _config() -> dict:
 
     if "backlog_bury_after_fail" not in raw:
         cfg["backlog_bury_after_fail"] = bool(
-            legacy.get("bury_after_fail", legacy.get("enabled", False))
+            legacy.get(
+                "bury_after_fail",
+                legacy.get(
+                    "enabled", DEFAULT_CONFIG["backlog_bury_after_fail"]
+                ),
+            )
         )
 
     if "backlog_bury_after_fail_limit" not in raw:
@@ -1755,8 +1760,8 @@ class SettingsDialog(QDialog):
         over_layout.addWidget(self.over_limit_grace_percent)
         over_layout.addWidget(
             QLabel(
-                "past the deck's time limit, automatically "
-                "postpone (bury) all remaining cards"
+                "past the deck's time limit, postpone (bury) "
+                "remaining deck's cards to the next day"
             )
         )
         over_layout.addStretch(1)
@@ -1766,7 +1771,8 @@ class SettingsDialog(QDialog):
         )
         addon_layout.addWidget(over_row)
         self.recommended_order = QCheckBox(
-            "Recommended Order: Due -> Re-review -> New"
+            "Recommended Card Order: Due first reviews -> "
+            "Re-reviews (fails) -> New cards"
         )
         self.recommended_order.setToolTip(
             "Present due review cards that have not failed today before "
@@ -1820,7 +1826,7 @@ class SettingsDialog(QDialog):
         )
         backlog_layout.addWidget(self.backlog_suppress_new_cards)
 
-        today_only_button = QPushButton("( Today Only - Set all New to 0 )")
+        today_only_button = QPushButton("Today Only - Set all New to 0")
         today_only_button.setToolTip(
             "Set each normal deck's Today Only new-card limit to 0 for "
             "Anki's current day."
