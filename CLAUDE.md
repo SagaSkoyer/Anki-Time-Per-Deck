@@ -14,5 +14,9 @@ add them to the file list in `build.sh` too.
 
 The GitHub Actions workflow `.github/workflows/build-ankiaddon.yml` runs
 `build.sh` on every pull request and uploads `TimePerDeck.ankiaddon` as a
-workflow artifact, so each PR has a ready-to-upload build attached. Do not
-commit `TimePerDeck.ankiaddon` itself (it is gitignored).
+workflow artifact, so each PR has a ready-to-upload build attached.
+
+IMPORTANT: `TimePerDeck.ankiaddon` is also committed to the repository so the
+user can download it directly from the GitHub file page without unzipping an
+artifact. Whenever you change any add-on file, run `bash build.sh` and include
+the regenerated `TimePerDeck.ankiaddon` in the same commit before pushing.
